@@ -1,4 +1,5 @@
-import {createLocalVue, mount} from '@vue/test-utils'
+import {mount} from '@vue/test-utils'
+// import {createLocalVue, mount} from '@vue/test-utils'
 
 import {
   getQueriesForElement,
@@ -20,6 +21,7 @@ function render(
   } = {},
   configurationCb,
 ) {
+  // TODO: Can we simplify this by using attachTo?
   const div = document.createElement('div')
   const baseElement = customBaseElement || customContainer || document.body
   const container = customContainer || baseElement.appendChild(div)
@@ -27,28 +29,30 @@ function render(
   const attachTo = document.createElement('div')
   container.appendChild(attachTo)
 
-  const localVue = createLocalVue()
+  // const localVue = createLocalVue()
   let vuexStore = null
   let router = null
   let additionalOptions = {}
 
+  // TODO: Fix VTL + Vuex (v4?)
   if (store) {
     const Vuex = require('vuex')
-    localVue.use(Vuex)
+    // localVue.use(Vuex)
     vuexStore = new Vuex.Store(store)
   }
 
+  // TODO: Fix VTL + Vue-router(next?)
   if (routes) {
     const requiredRouter = require('vue-router')
     const VueRouter = requiredRouter.default || requiredRouter
-    localVue.use(VueRouter)
+    // localVue.use(VueRouter)
     router = new VueRouter({
       routes,
     })
   }
 
   if (configurationCb && typeof configurationCb === 'function') {
-    additionalOptions = configurationCb(localVue, vuexStore, router)
+    additionalOptions = configurationCb(vuexStore, router)
   }
 
   if (!mountOptions.propsData && !!mountOptions.props) {
@@ -57,10 +61,10 @@ function render(
   }
 
   const wrapper = mount(TestComponent, {
-    localVue,
-    router,
+    // localVue,
+    // router,
+    // store: vuexStore,
     attachTo,
-    store: vuexStore,
     ...mountOptions,
     ...additionalOptions,
   })
@@ -73,10 +77,14 @@ function render(
     baseElement,
     debug: (el = baseElement) =>
       Array.isArray(el) ? el.forEach(e => logDOM(e)) : logDOM(el),
-    unmount: () => wrapper.destroy(),
-    isUnmounted: () => wrapper.vm._isDestroyed,
+    unmount: () => wrapper.unmount(),
+    // isUnmounted: () => wrapper.vm._isDestroyed,
     html: () => wrapper.html(),
     emitted: () => wrapper.emitted(),
+
+    // TODO: Is this unnecessary now? No need to await for a tick because
+    //       setProps() handles it for us now.
+    // We can simply expose setProps.
     updateProps: _ => {
       wrapper.setProps(_)
       return waitFor(() => {})
