@@ -109,7 +109,7 @@ function cleanupAtWrapper(wrapper) {
     document.body.removeChild(wrapper.element.parentNode)
   }
 
-  wrapper.destroy()
+  wrapper.unmount()
 
   mountedWrappers.delete(wrapper)
 }
