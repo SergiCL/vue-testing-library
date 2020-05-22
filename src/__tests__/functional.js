@@ -1,21 +1,23 @@
-import {render} from '@testing-library/vue'
-import FunctionalSFC from './components/FunctionalSFC'
+test.todo('Your test suite must contain at least one test.')
 
-const Functional = {
-  functional: true,
-  render(createElement) {
-    return createElement('p', null, 'Hi!')
-  },
-}
+// import {render} from '@testing-library/vue'
+// import FunctionalSFC from './components/FunctionalSFC'
 
-test('renders functional component', () => {
-  const {getByText} = render(Functional)
+// const Functional = {
+//   functional: true,
+//   render(createElement) {
+//     return createElement('p', null, 'Hi!')
+//   },
+// }
 
-  getByText('Hi!')
-})
+// test('renders functional component', () => {
+//   const {getByText} = render(Functional)
 
-test('renders functional SFC component', () => {
-  const {getByText} = render(FunctionalSFC)
+//   getByText('Hi!')
+// })
 
-  getByText('Hi!')
-})
+// test('renders functional SFC component', () => {
+//   const {getByText} = render(FunctionalSFC)
+
+//   getByText('Hi!')
+// })
